@@ -70,7 +70,7 @@ def get_from_all_warehouse(product_id: int):
                  "            ))\n"
                  "           )\n"
                  "FROM product p, stock_quant sq, warehouse w\n"
-                 "WHERE p.id = 1 AND sq.product_id = p.id AND sq.warehouse_id = w.id\n"
+                 "WHERE p.id = :id AND sq.product_id = p.id AND sq.warehouse_id = w.id\n"
                  "GROUP BY p.description, p.price, p.name, p.id")
     with Session(engine) as session:
         results = session.execute(query, {'id': product_id})
