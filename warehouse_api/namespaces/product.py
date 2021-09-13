@@ -104,3 +104,10 @@ class ProductParamID(Resource):
             "message": "product not found",
             "status_code": 404
         }, product_response_failed_schema), 404
+
+
+@product_ns.route("/<int:product_id>/<action>")
+class ProductAction(Resource):
+    def get(self, product_id: int, action: str):
+        if action == "get_all_info":
+            return product_service.get_from_all_warehouse(product_id)

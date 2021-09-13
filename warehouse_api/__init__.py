@@ -22,7 +22,7 @@ load_dotenv()
 postgresql_url = f"{os.environ.get('DB_TYPE')}://{os.environ.get('DB_USERNAME')}:{os.environ.get('DB_PASSWORD')}@" \
                  f"{os.environ.get('DB_HOST')}:{os.environ.get('DB_PORT')}/" \
                  f"{os.environ.get('DB_NAME')}"
-engine = create_engine(url=postgresql_url, echo=True)
+engine = create_engine(url=postgresql_url)
 
 api = Api()
 

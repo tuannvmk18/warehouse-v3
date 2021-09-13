@@ -33,3 +33,8 @@ def update_from_json(payload: dict):
 
 def delete_by_id(product_id: int):
     return product_repository.delete_by_id(product_id)
+
+
+def get_from_all_warehouse(product_id: int):
+    raw_results = product_repository.get_from_all_warehouse(product_id)
+    return raw_results[0][0]

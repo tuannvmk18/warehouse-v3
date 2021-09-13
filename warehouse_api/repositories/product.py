@@ -1,9 +1,9 @@
 import json
 import sys
 
-from sqlmodel import Session, select
+from sqlmodel import Session, select, text
 from warehouse_api import engine
-from warehouse_api.models import Product
+from warehouse_api.models import Product, StockQuant
 from warehouse_api.ultis import update_model
 
 
@@ -55,3 +55,23 @@ def update(product_update: dict):
             session.refresh(product)
             return product
         return None
+
+
+def get_from_all_warehouse(product_id: int):
+    query = text("SELECT json_build_object(\n"
+                 "    'id', p.id,\n"
+                 "    'name', p.name,\n"
+                 "    'description', p.description,\n"
+                 "    'price', p.price,\n"
+                 "    'stock_quant', json_agg(json_build_object(\n"
+                 "        'warehouse_id', sq.warehouse_id,\n"
+                 "        'warehouse_name', w.name,\n"
+                 "        'quantity', sq.quantity\n"
+                 "            ))\n"
+                 "           )\n"
+                 "FROM product p, stock_quant sq, warehouse w\n"
+                 "WHERE p.id = 1 AND sq.product_id = p.id AND sq.warehouse_id = w.id\n"
+                 "GROUP BY p.description, p.price, p.name, p.id")
+    with Session(engine) as session:
+        results = session.execute(query, {'id': product_id})
+        return results.fetchall()
