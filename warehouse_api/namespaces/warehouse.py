@@ -10,13 +10,20 @@ warehouse_schema = warehouse_ns.model('Warehouse Schema', {
     'name': fields.String,
     'address': fields.String,
     'phone': fields.String
-})
+}, strict=True)
 
 warehouse_create_schema = warehouse_ns.model('Warehouse Create Schema', {
     'name': fields.String(required=True),
     'address': fields.String(required=True),
     'phone': fields.String(required=True)
-})
+}, strict=True)
+
+warehouse_update_schema = warehouse_ns.model('Warehouse Update Schema', {
+    'id': fields.Integer(required=True),
+    'name': fields.String,
+    'address': fields.String,
+    'phone': fields.String
+}, strict=True)
 
 warehouse_response_success = warehouse_ns.model('Warehouse Response Success', {
     'data': fields.Nested(warehouse_schema),
@@ -59,6 +66,23 @@ class WareHouseNoParam(Resource):
             'status_code': 201
         }, warehouse_response_success), 201
 
+    @warehouse_ns.doc(body=warehouse_update_schema)
+    @warehouse_ns.expect(warehouse_update_schema, validate=True)
+    @warehouse_ns.response(model=warehouse_response_success, code=200, description="Update Warehouse Success")
+    @warehouse_ns.response(model=warehouse_response_failed, code=404, description="Warehouse not found")
+    def put(self):
+        print(warehouse_ns.payload)
+        warehouse = warehouse_service.update_from_json(warehouse_ns.payload)
+        if warehouse is not None:
+            return marshal({
+                'data': json.loads(warehouse.json()),
+                'status_code': 200
+            }, warehouse_response_success), 200
+        return marshal({
+            'messgae': 'warehouse not found',
+            'status_code': 404
+        }), 404
+
 
 @warehouse_ns.route('/<int:warehouse_id>')
 class WarehouseWithID(Resource):
@@ -88,3 +112,10 @@ class WarehouseWithID(Resource):
             'message': 'resource not found',
             'status_code': 404
         }, warehouse_response_failed), 404
+
+
+@warehouse_ns.route('/<int:warehouse_id>/<action>')
+class WarehouseAction(Resource):
+    def post(self, warehouse_id: int, action: str):
+        if action == "update_product_quantity":
+            print(warehouse_ns.payload)

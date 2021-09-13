@@ -23,8 +23,9 @@ def create_as_json(payload: dict):
 
 
 def update_from_json(payload: dict):
-    product: Product = Product(name=payload['name'], description=payload['description'], price=payload['price'])
-    product = product_repository.update(product)
+    product: Product = Product(id=payload['id'], name=payload['name'], description=payload['description'],
+                               price=payload['price'])
+    product = product_repository.update(json.loads(product.json()))
     if product is not None:
         return json.loads(json.dumps(product.json()))
     return None

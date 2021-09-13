@@ -62,9 +62,10 @@ class ProductNoParam(Resource):
         }, product_response_success_schema), 201
 
     @product_ns.doc(body=product_update_schema, validate=True)
+    @product_ns.expect(product_update_schema, validate=True)
     @product_ns.response(model=product_response_success_schema, code=200, description="Update Product Success")
     @product_ns.response(model=product_response_failed_schema, code=404, description="Update Product Failed")
-    def patch(self):
+    def put(self):
         product = product_service.update_from_json(product_ns.payload)
         if product is not None:
             return marshal({
@@ -72,7 +73,7 @@ class ProductNoParam(Resource):
                 'status_code': 200
             }, product_response_success_schema), 200
         return marshal({
-            'message': 'product not found',
+            'error': 'product not found',
             'status_code': 404
         }, product_response_failed_schema), 404
 

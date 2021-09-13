@@ -28,3 +28,8 @@ def get_by_id_as_json(warehouse_id: int):
 
 def delete_by_id(warehouse_id: int):
     return warehouse_repository.delete_by_id(warehouse_id)
+
+
+def update_from_json(payload: dict):
+    warehouse = warehouse_repository.update(payload)
+    return warehouse
