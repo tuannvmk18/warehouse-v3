@@ -21,4 +21,4 @@ def delete_by_id(order_id: int):
 
 
 def create(data: dict):
-    print("OK")
+    return order_repository.create(data)
