@@ -1,6 +1,7 @@
 import json
+from typing import List
 
-from warehouse_api.models import WareHouse
+from warehouse_api.models import WareHouse, StockQuant
 from warehouse_api.repositories import warehouse as warehouse_repository
 
 
@@ -33,3 +34,15 @@ def delete_by_id(warehouse_id: int):
 def update_from_json(payload: dict):
     warehouse = warehouse_repository.update(payload)
     return warehouse
+
+
+def update_product_quantity(warehouse_id: int, payload: dict):
+    warehouse_id = warehouse_id
+    list_stock_quant: List[StockQuant] = []
+    for p in payload:
+        stock_quant: StockQuant = StockQuant()
+        stock_quant.warehouse_id = warehouse_id
+        stock_quant.product_id = p['product_id']
+        stock_quant.quantity = p['quantity']
+        list_stock_quant.append(stock_quant)
+    warehouse_repository.update_product_quantity(warehouse_id, list_stock_quant)

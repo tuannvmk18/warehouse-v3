@@ -31,10 +31,11 @@ def create_app() -> Flask:
     app = Flask(__name__)
     api.init_app(app)
 
-    from warehouse_api.namespaces import product_ns, warehouse_ns
+    from warehouse_api.namespaces import product_ns, warehouse_ns, order_ns
 
     api.add_namespace(product_ns)
     api.add_namespace(warehouse_ns)
+    api.add_namespace(order_ns)
 
     SQLModel.metadata.create_all(engine)
     return app
