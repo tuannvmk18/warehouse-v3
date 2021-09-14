@@ -11,7 +11,13 @@ def get_all_as_json():
 
 def get_by_id_as_json(order_id: int):
     order = order_repository.get_by_id(order_id)
-    return order.json()
+    if order is not None:
+        return json.loads(order.json())
+    return None
+
+
+def delete_by_id(order_id: int):
+    return order_repository.delete_by_id(order_id)
 
 
 def create(data: dict):
