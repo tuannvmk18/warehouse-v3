@@ -118,4 +118,4 @@ class WarehouseWithID(Resource):
 class WarehouseAction(Resource):
     def post(self, warehouse_id: int, action: str):
         if action == "update_product_quantity":
-            warehouse_service.update_product_quantity(warehouse_id=warehouse_id,payload=warehouse_ns.payload)
+            return warehouse_service.update_product_quantity(warehouse_id=warehouse_id,payload=warehouse_ns.payload)

@@ -5,7 +5,7 @@ from warehouse_api.models import Order
 
 
 def get_all_as_json():
-    results = [order.json() for order in order_repository.get_all()]
+    results = [json.loads(order.json()) for order in order_repository.get_all()]
     return results
 
 

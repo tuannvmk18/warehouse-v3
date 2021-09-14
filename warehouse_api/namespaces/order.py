@@ -7,4 +7,4 @@ order_ns = Namespace('order', 'Order Api')
 @order_ns.route('/')
 class OrderNoParam(Resource):
     def get(self):
-        return "OK"
+        return order_service.get_all_as_json()

@@ -45,4 +45,4 @@ def update_product_quantity(warehouse_id: int, payload: dict):
         stock_quant.product_id = p['product_id']
         stock_quant.quantity = p['quantity']
         list_stock_quant.append(stock_quant)
-    warehouse_repository.update_product_quantity(warehouse_id, list_stock_quant)
+    return warehouse_repository.update_product_quantity(warehouse_id, list_stock_quant)

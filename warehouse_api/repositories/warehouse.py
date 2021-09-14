@@ -67,3 +67,5 @@ def update_product_quantity(warehouse_id: int, list_stock_quant: List[StockQuant
                     update_model(res, json.loads(stock_quant.json()))
                     session.add(res)
                     session.commit()
+        return True
+    return False
